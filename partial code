@@ -1,0 +1,128 @@
+//g++  5.4.0
+
+#include <iostream>
+#include <string.h>
+#include <ctime>
+#include <functional>
+
+using namespace std;
+
+int nodeIdCtr=0;
+int nodeNoCtr=0;
+
+
+struct tree
+{   
+string OwnerId;
+string Value;
+string OwnerName;
+string Hash;
+string timestamp ;
+int nodeNumber;
+int nodeId;
+string *referenceNodeId;
+string * childReferenceNodeId;
+string * genesisReferenceNodeId;
+int HashValue;
+
+struct tree* parent=NULL;
+struct tree* child[100];    
+int childCtr=0;    
+};
+
+struct tree* genesis=new(struct tree);
+
+void putdata(struct tree* node)
+{
+
+time_t now = time(0);
+char* dt = ctime(&now);
+node->timestamp=dt;    
+    
+    
+++nodeIdCtr;
+++nodeNoCtr;
+    char temp1[100],temp2[100],temp3[100];
+cout<<"  >OwnerId  >Value  >OwnerName\n";
+
+strcat(temp1,temp2);
+strcat(temp1,temp3);    
+    
+cin>>node->OwnerId;
+cin>>node->Value;
+cin>>node->OwnerName;    
+
+    
+hash<string> hash_fn;
+size_t hash = hash_fn(temp1);           
+node->Hash=hash;
+
+
+node->nodeNumber=nodeIdCtr;
+node->nodeId=nodeNoCtr;
+     
+}
+
+void connect(struct tree* parent,struct tree* child)
+{
+parent->child[parent->childCtr]=child;
+child->parent=parent;
+    
+child->referenceNodeId=&(parent->OwnerId);
+(parent->child[parent->childCtr])->childReferenceNodeId=&(child->OwnerId);
+child->genesisReferenceNodeId=&(parent->OwnerId);
+
+}
+
+
+
+
+void child()
+{
+    int dec=0;
+    cout<<"want to create child    0 for 'no' ,1 for 'yes'\n";
+cin>>dec;
+    if(dec==0){return;}
+    cout<<"Enter Genesis Detail";
+
+struct tree* node=new(struct tree);    
+    
+time_t now = time(0);
+char* dt = ctime(&now);
+node->timestamp=dt;    
+    
+    
+++nodeIdCtr;
+++nodeNoCtr;
+    
+cout<<"  >OwnerId  >Value  >OwnerName\n";
+
+char v1[100],v2[100],v3[100];
+cin>>v1>>v2>>v3;
+strcat(v1,v2);
+strcat(v1,v3);    
+    
+cin>>node->OwnerId;
+cin>>node->Value;
+cin>>node->OwnerName;    
+
+    
+hash<string> hash_fn;
+size_t  hash = hash_fn(v1);           
+node->Hash=hash;
+
+
+node->nodeNumber=nodeIdCtr;
+node->nodeId=nodeNoCtr;
+    connect(genesis,node);
+    
+}
+
+int main()
+{
+cout<<"Enter Genesis Detail"  ;    
+putdata(genesis);
+    
+cout<<"Child Of Genesis :\n"; 
+child();    
+}
